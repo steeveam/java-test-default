@@ -8,35 +8,17 @@ import javax.persistence.Id;
 import java.sql.Date;
 
 /**
- * Simple data entity describing basic properties of every JavaScript framework.
+ * Simple DTO for JavaScript framework entity.
  *
- * @author Etnetera
+ * @author Stefan Marcin
  */
-@Entity
-public class JavaScriptFramework {
+public class JavaScriptFrameworkDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(nullable = false, length = 30)
     private String name;
-
-    @Column(length = 20)
     private String version;
-
-    @Column
-    private Date deprecationDate;
-
-    @Column
+    private String deprecationDate;
     private Integer hypeLevel;
-
-    public JavaScriptFramework() {
-    }
-
-    public JavaScriptFramework(String name) {
-        this.name = name;
-    }
 
     public Long getId() {
         return id;
@@ -62,11 +44,11 @@ public class JavaScriptFramework {
         this.version = version;
     }
 
-    public Date getDeprecationDate() {
+    public String getDeprecationDate() {
         return deprecationDate;
     }
 
-    public void setDeprecationDate(Date deprecationDate) {
+    public void setDeprecationDate(String deprecationDate) {
         this.deprecationDate = deprecationDate;
     }
 
@@ -76,16 +58,5 @@ public class JavaScriptFramework {
 
     public void setHypeLevel(Integer hypeLevel) {
         this.hypeLevel = hypeLevel;
-    }
-
-    @Override
-    public String toString() {
-        return "JavaScriptFramework{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", version='" + version + '\'' +
-                ", deprecationDate=" + deprecationDate +
-                ", hypeLevel=" + hypeLevel +
-                '}';
     }
 }
