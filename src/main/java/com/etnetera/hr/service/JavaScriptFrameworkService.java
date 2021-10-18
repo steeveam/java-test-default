@@ -2,13 +2,15 @@ package com.etnetera.hr.service;
 
 import com.etnetera.hr.data.JavaScriptFramework;
 import com.etnetera.hr.data.JavaScriptFrameworkDTO;
-import com.etnetera.hr.service.search.SearchCriteria;
 import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
+import com.etnetera.hr.service.search.JavaScriptFrameworkSpecification;
+import com.etnetera.hr.service.search.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.annotation.PostConstruct;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +22,17 @@ public class JavaScriptFrameworkService {
     private final JavaScriptFrameworkRepository repository;
     private final String datePattern = "yyyy-MM-dd";
     private final SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+
+    @PostConstruct
+    private void loadDb() {
+        repository.save(new JavaScriptFramework(1L, "ReactJs", "1", convertToDate("2021-12-12"), 1));
+        repository.save(new JavaScriptFramework(2L, "React Native", "2", convertToDate("2021-12-12"), 2));
+        repository.save(new JavaScriptFramework(3L, "AngularJs", "3", convertToDate("2021-12-12"), 3));
+        repository.save(new JavaScriptFramework(4L, "jQuery", "4", convertToDate("2021-12-12"), 5));
+        repository.save(new JavaScriptFramework(5L, "Mithril", "5", convertToDate("2021-12-12"), 3));
+        repository.save(new JavaScriptFramework(6L, "Meteor", "6", convertToDate("2021-12-12"), 4));
+        repository.save(new JavaScriptFramework(7L, "VueJs", "7", convertToDate("2021-12-12"), 1));
+    }
 
     @Autowired
     public JavaScriptFrameworkService(JavaScriptFrameworkRepository repository) {
@@ -71,7 +84,7 @@ public class JavaScriptFrameworkService {
 
     public Iterable<JavaScriptFramework> searchFrameworks(List<SearchCriteria> params) {
         System.out.println(params);
-        //TODO build predicates and filter based on them
-        return repository.findAll();
+        JavaScriptFrameworkSpecification spec = new JavaScriptFrameworkSpecification(params);
+        return repository.findAll(spec);
     }
 }

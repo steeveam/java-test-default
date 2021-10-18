@@ -44,13 +44,11 @@ public class JavaScriptFrameworkController {
         }
 
         List<SearchCriteria> params = new ArrayList<SearchCriteria>();
-        if (search != null) {   //TODO: remove
-            Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-            Matcher matcher = pattern.matcher(search + ",");
-            while (matcher.find()) {
-                params.add(new SearchCriteria(matcher.group(1),
-                        matcher.group(2), matcher.group(3)));
-            }
+        Pattern pattern = Pattern.compile("(\\w+?)(:|@|<|>)(\\w+?),");
+        Matcher matcher = pattern.matcher(search + ",");
+        while (matcher.find()) {
+            params.add(new SearchCriteria(matcher.group(1),
+                    matcher.group(2), matcher.group(3)));
         }
         return service.searchFrameworks(params);
     }

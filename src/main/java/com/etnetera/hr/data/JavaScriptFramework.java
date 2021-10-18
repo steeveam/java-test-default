@@ -38,6 +38,14 @@ public class JavaScriptFramework {
         this.name = name;
     }
 
+    public JavaScriptFramework(Long id, String name, String version, Date deprecationDate, Integer hypeLevel) {
+        this.id = id;
+        this.name = name;
+        this.version = version;
+        this.deprecationDate = deprecationDate;
+        this.hypeLevel = hypeLevel;
+    }
+
     public Long getId() {
         return id;
     }
