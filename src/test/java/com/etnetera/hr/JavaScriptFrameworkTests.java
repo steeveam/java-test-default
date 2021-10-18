@@ -1,6 +1,7 @@
 package com.etnetera.hr;
 
 import com.etnetera.hr.data.JavaScriptFramework;
+import com.etnetera.hr.data.JavaScriptFrameworkDTO;
 import com.etnetera.hr.repository.JavaScriptFrameworkRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,16 +52,20 @@ public class JavaScriptFrameworkTests {
 
     @Test
     public void addingFrameworkIT() throws Exception {
-        JavaScriptFramework framework = new JavaScriptFramework("VueJs");
+        JavaScriptFrameworkDTO frameworkDTO = new JavaScriptFrameworkDTO("VueJs");
+        frameworkDTO.setDeprecationDate("2021-10-18");
 
         MvcResult result = mockMvc.perform(post("/frameworks")
                 .contentType("application/json")
-                .content(objectMapper.writeValueAsString(framework))).andReturn();
+                .content(objectMapper.writeValueAsString(frameworkDTO))).andReturn();
 
         assertEquals(OK.value(), result.getResponse().getStatus());
         assertEquals(
-                framework.getName(),
-                objectMapper.readValue(result.getResponse().getContentAsString(), JavaScriptFramework.class).getName());
+                frameworkDTO.getName(),
+                objectMapper.readValue(result.getResponse().getContentAsString(), JavaScriptFrameworkDTO.class).getName());
+        assertEquals(
+                frameworkDTO.getDeprecationDate(),
+                objectMapper.readValue(result.getResponse().getContentAsString(), JavaScriptFrameworkDTO.class).getDeprecationDate());
     }
 
     @Test
@@ -109,7 +114,7 @@ public class JavaScriptFrameworkTests {
     }
 
     @Test
-    public void searchFrameworks() throws Exception {
+    public void searchFrameworksIT() throws Exception {
         repository.save(new JavaScriptFramework("ReactJs"));
         repository.save(new JavaScriptFramework("React Native"));
         repository.save(new JavaScriptFramework("Vue Js"));

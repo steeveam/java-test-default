@@ -3,13 +3,15 @@ package com.etnetera.hr.service.search;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Model for search feature - contains keys (properties) to look for, operation and value
+ *
+ * @author Stefan Marcin
+ */
 public class SearchCriteria {
     private String key;
     private Object value;
     private SearchOperation operation;
-
-    public SearchCriteria() {
-    }
 
     public SearchCriteria(String key, String operation, Object value) {
         validate(key, operation, value);
@@ -22,16 +24,16 @@ public class SearchCriteria {
         if ("deprecationDate".equals(key)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Search by deprecationDate not implemented.");
         }
-        if (key.equals("name") && (">".equals(operation) || "<".equals(operation))){
+        if (key.equals("name") && (">".equals(operation) || "<".equals(operation))) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name search with operators >, < not supported.");
         }
     }
 
-    public java.lang.String getKey() {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(java.lang.String key) {
+    public void setKey(String key) {
         this.key = key;
     }
 

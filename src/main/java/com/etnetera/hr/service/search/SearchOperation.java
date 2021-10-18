@@ -1,10 +1,14 @@
 package com.etnetera.hr.service.search;
 
-import java.util.Arrays;
 
 import static java.util.Arrays.stream;
 
-enum SearchOperation {
+/**
+ * Enum for Search operations.
+ *
+ * @author Stefan Marcin
+ */
+public enum SearchOperation {
     EQUALS(":"), MATCH("@"), GREATER_THAN(">"), LESS_THAN("<");
 
     private final String keyword;

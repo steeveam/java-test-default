@@ -10,29 +10,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.annotation.PostConstruct;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+/**
+ * Service layer of JavaScriptFramework logic.
+ *
+ * @author Stefan Marcin
+ */
 @Component
 public class JavaScriptFrameworkService {
 
     private final JavaScriptFrameworkRepository repository;
     private final String datePattern = "yyyy-MM-dd";
     private final SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
-
-    @PostConstruct
-    private void loadDb() {
-        repository.save(new JavaScriptFramework(1L, "ReactJs", "1", convertToDate("2021-12-12"), 1));
-        repository.save(new JavaScriptFramework(2L, "React Native", "2", convertToDate("2021-12-12"), 2));
-        repository.save(new JavaScriptFramework(3L, "AngularJs", "3", convertToDate("2021-12-12"), 3));
-        repository.save(new JavaScriptFramework(4L, "jQuery", "4", convertToDate("2021-12-12"), 5));
-        repository.save(new JavaScriptFramework(5L, "Mithril", "5", convertToDate("2021-12-12"), 3));
-        repository.save(new JavaScriptFramework(6L, "Meteor", "6", convertToDate("2021-12-12"), 4));
-        repository.save(new JavaScriptFramework(7L, "VueJs", "7", convertToDate("2021-12-12"), 1));
-    }
 
     @Autowired
     public JavaScriptFrameworkService(JavaScriptFrameworkRepository repository) {
@@ -66,6 +59,11 @@ public class JavaScriptFrameworkService {
         repository.delete(framework);
     }
 
+    public Iterable<JavaScriptFramework> searchFrameworks(List<SearchCriteria> params) {
+        JavaScriptFrameworkSpecification spec = new JavaScriptFrameworkSpecification(params);
+        return repository.findAll(spec);
+    }
+
     private JavaScriptFramework findById(Long id) {
         if (id == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing framework id");
@@ -80,11 +78,5 @@ public class JavaScriptFrameworkService {
         } catch (ParseException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid date format, expected: " + datePattern);
         }
-    }
-
-    public Iterable<JavaScriptFramework> searchFrameworks(List<SearchCriteria> params) {
-        System.out.println(params);
-        JavaScriptFrameworkSpecification spec = new JavaScriptFrameworkSpecification(params);
-        return repository.findAll(spec);
     }
 }

@@ -37,19 +37,19 @@ public class JavaScriptFrameworkController {
         this.service = service;
     }
 
+    /**
+     * Retrieving all frameworks in case of no search param / found frameworks in case of search param
+     *
+     * @param search parameter - expected examples: search=name:John,hypeLevel>12 / search=name@React,hypeLevel=1...
+     * @return list of JavaScriptFramework
+     */
     @GetMapping("/frameworks")
-    public Iterable<JavaScriptFramework> searchFrameworks(@RequestParam(name = "search", required = false) String search) {
+    public Iterable<JavaScriptFramework> getFrameworks(@RequestParam(name = "search", required = false) String search) {
         if (search == null) {
             return service.findAll();
         }
 
-        List<SearchCriteria> params = new ArrayList<SearchCriteria>();
-        Pattern pattern = Pattern.compile("(\\w+?)(:|@|<|>)(\\w+?),");
-        Matcher matcher = pattern.matcher(search + ",");
-        while (matcher.find()) {
-            params.add(new SearchCriteria(matcher.group(1),
-                    matcher.group(2), matcher.group(3)));
-        }
+        List<SearchCriteria> params = extractSearchCriteria(search);
         return service.searchFrameworks(params);
     }
 
@@ -67,6 +67,17 @@ public class JavaScriptFrameworkController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFramework(@PathVariable Long id) {
         service.deleteFramework(id);
+    }
+
+    private ArrayList<SearchCriteria> extractSearchCriteria(String searchString) {
+        ArrayList<SearchCriteria> result = new ArrayList<>();
+        Pattern pattern = Pattern.compile("(\\w+?)(:|@|<|>)(\\w+?),");
+        Matcher matcher = pattern.matcher(searchString + ",");
+        while (matcher.find()) {
+            result.add(new SearchCriteria(matcher.group(1),
+                    matcher.group(2), matcher.group(3)));
+        }
+        return result;
     }
 
 }

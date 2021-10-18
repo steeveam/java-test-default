@@ -15,6 +15,12 @@ import static com.etnetera.hr.service.search.SearchOperation.GREATER_THAN;
 import static com.etnetera.hr.service.search.SearchOperation.LESS_THAN;
 import static com.etnetera.hr.service.search.SearchOperation.MATCH;
 
+/**
+ * Structure for querying repository with search criteria.
+ * Takes a list of SearchCriteria and converts it to predicate for DB search.
+ *
+ * @author Stefan Marcin
+ */
 public class JavaScriptFrameworkSpecification implements Specification<JavaScriptFramework> {
 
     private final List<SearchCriteria> list;
@@ -51,5 +57,9 @@ public class JavaScriptFrameworkSpecification implements Specification<JavaScrip
             }
         }
         return builder.and(predicates.toArray(new Predicate[0]));
+    }
+
+    public List<SearchCriteria> getList() {
+        return list;
     }
 }

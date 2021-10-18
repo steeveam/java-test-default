@@ -20,6 +20,18 @@ public class JavaScriptFrameworkDTO {
     private String deprecationDate;
     private Integer hypeLevel;
 
+    public JavaScriptFrameworkDTO(String name) {
+        this.name = name;
+    }
+
+    public JavaScriptFrameworkDTO(Long id, String name, String version, String deprecationDate, Integer hypeLevel) {
+        this.id = id;
+        this.name = name;
+        this.version = version;
+        this.deprecationDate = deprecationDate;
+        this.hypeLevel = hypeLevel;
+    }
+
     public Long getId() {
         return id;
     }
